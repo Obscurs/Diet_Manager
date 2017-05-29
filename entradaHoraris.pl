@@ -1,0 +1,97 @@
+
+% Dayzones:
+% 	1	Esmorzar
+%	2	Segon esmorzar
+%	3	Dinar
+%	4	Berenar
+%	5	Sopar
+%	6	PostSopar
+
+numDays(7).
+numProtesDay(150).
+numFatDay(90).
+numCarbDay(300).
+numKcalDay(2600).
+marginStats(5).
+
+numDayZones(6).
+
+numIngredients(52).
+numMeals(19).
+
+limitMealsZone(3).
+
+
+% Sintax:	(id	,name_meal	,ingredients	,amounts	,day_zones	,uses	).
+meal(1, tortillaca_zumo, [34,33,32,5,36,4], [0.5,1,2,3,1,3.7], [1], [1,14]).
+meal(2, platano, [8], [1], [2,4], [1,14]).
+meal(3, merluza_papillote, [12,14,20,21,27,36], [1.2,1,0.5,0.5,2,1], [5], [1,2]).
+meal(4, fideua_verduras_pavo, [2,31,19,14,21,23,17,36], [1.3,1,3,0.3,0.3,0.3,0.3,1], [3], [1,2]).
+meal(5, smothie_1, [35,7,8,30], [1.25,1.25,0.5,0.25], [2,4], [1,14]).
+meal(6, escalivada, [20,17,16,24], [0.5,0.25,1,1], [5], [1,2]).
+meal(7, tortillaca_mini, [34,33,32,5,36,4,6], [0.5,1,1,2,1,3.7,1], [1], [1,14]).
+meal(8, arroz_con_pollo, [29,1,19,24,36], [1.2,1.5,0.5,0.5,1], [3], [1,2]).
+meal(9, guisantes, [18,28], [1,0.5], [5], [1,2]).
+meal(10, protesuis, [36], [1], [2,4,6], [1,14]).
+meal(11, leche_chocapics, [7,39], [2.5,0.7], [2,4,6], [1,3]).
+meal(12, leche_mueslis, [7,38], [2.5,1], [2,4,6], [1,3]).
+meal(13, piquillo_garbanzos, [40,9], [1.8,1], [5], [1,2]).
+meal(14, arroz_atun_aguacate, [29,13,52],[1,1,1],[3,4,5],[1,2]).
+meal(15, pavo_papillon, [2,51,32],[2,2,2],[3,5],[1,2]).
+meal(16, emparedado_bacalao, [47,48,49,28,5,24,36],[1.5,1.5,4,0.5,0.5,0.5,1],[3,5],[1,2]).
+meal(17, espagetis_pavo, [31,2,23,45,26,7,32,36],[1,1.3,0.6,0.8,1,1.3,0.25,1],[3],[1,2]).
+meal(18, bocata_jmon_ques, [50,51,32],[2,1,1],[2,4,6],[1,14]).
+meal(19, bocata_atun, [50,13],[2,1],[2,4,6],[1,2]).
+% Sintax:	(id	,name_comp	,type	,kcal	,prot	,carb	,fat	,amount	,priority,stackAmount,unit	).
+component(1, pollo, meat, 145, 22, 0, 6, 0,0, 100, g).  % 100g
+component(2, pavo, meat, 105, 24, 1, 1, 0,0, 100, g).
+component(3, ala_pollo, meat, 217, 18, 0, 15, 0,0, 100, g).
+component(4, zumo_naranja, fruit, 43, 1, 9, 0, 0,0, 100, g).
+component(5, huevo_entero, meat, 97, 8, 0, 7, 0,0, 1, unidad). % unidad
+component(6, huevo_clara, meat, 19, 4, 0, 0, 0,0, 1, unidad). % unidad
+component(7, leche_semidesnatada, lact, 46, 3.2, 4.8, 1.6, 0,0, 100, g).
+component(8, platano, fruit, 152, 2, 33, 0, 0,0, 1, unidad).	% unidad
+component(9, garbanzo, legumbre, 120, 7, 14, 3, 0,0, 100, g).	% 100g
+component(10, salmon, pescado, 191, 20, 0, 12, 0,0, 100, g).	% 100g
+component(11, dorada, pescado, 230, 18, 1, 17, 0,0, 100, g).	% 100g
+component(12, merluza, pescado, 64, 12, 0, 2, 0,0, 100, g).	% 100g
+component(13, atun_lata, pescado, 116, 14, 0, 7, 0,0, 1, unidad).	% unidad
+component(14, zanaoria, verdura, 30, 1, 5, 0, 0,0, 1, unidad).	% unidad
+component(15, nabo, verdura, 39, 1, 6, 0, 0,0, 1, unidad).	% unidad
+component(16, patata, tuberculo, 132, 4, 26, 0, 0,0, 1, unidad).	% unidad
+component(17, berenjena, verdura, 57, 3, 6, 0, 0,0, 1, unidad).	% unidad
+component(18, guisantes, verdura, 91, 7, 11, 1, 0,0, 100, g).	% 100g
+component(19, judia_verde, verdura, 36, 2, 4, 1, 0,0, 100, g).	% 100g
+component(20, pimiento_rojo, verdura, 59, 2, 8, 2, 0,0, 1, unidad).	% unidad
+component(21, pimiento_verde, verdura, 20, 1, 2, 1, 0,0, 1, unidad).	% unidad
+component(22, pepino, verdura, 17, 1, 2, 0, 0,0, 1, unidad).	% unidad
+component(23, puerro, verdura, 22, 2, 2, 0, 0,0, 1, unidad).	% unidad
+component(24, tomate, verdura, 33, 1, 5, 0, 0,0, 1, unidad).	% unidad
+component(25, calabacin, verdura, 23, 2, 2, 1, 0,0, 1, unidad).	% unidad
+component(26, calabaza, verdura, 28, 1, 5, 0, 0,0, 100, g).	% 100g
+component(27, esparrago, verdura, 5, 1, 1, 0, 0,0, 1, unidad).	% unidad
+component(28, cebolla, verdura, 32, 1, 5, 0, 0,0, 100, g).	% 100g
+component(29, arroz, grano, 364, 7, 81, 1, 0,0, 100, g).	% 100g
+component(30, avena, grano, 353, 12, 56, 7, 0,0, 100, g).	% 100g
+component(31, pasta, grano, 359, 12, 70, 2, 0,0, 100, g).	% 100g
+component(32, queso_light, lacteo, 60, 5, 1, 4, 0,0, 1, unidad).	% unidad
+component(33, fajita, harina, 192, 5, 34, 3, 0,0, 1, unidad).	% unidad
+component(34, maiz, cereal, 112, 4, 15, 3, 0,0, 1, lata).	% lata
+component(35, queso_fresco_batido, lacteo, 46, 8, 4, 0, 0,0, 100, g).	% 100
+component(36, aceite, lacteo, 90, 0, 0, 10, 0,0, 1, cucharada).	% cucharada
+component(37, protesuis, lacteo, 64, 10, 6, 0, 0,0, 1, unidad).	% unidad
+component(38, mueslis, cereal, 200, 4.5, 32, 7, 0,0, 100, g).	% 100g
+component(39, chocapics, cereal, 389, 8.2, 75, 4.5, 0,0, 100, g).	% 100g
+component(40, pimientos_bacalao, fish, 93, 5.3, 10, 3, 0,0, 100, g).	% 100g
+component(41, mantequilla, lacteo, 98, 0, 0, 10, 0,0, 1, cucharada).	% cucharada
+component(42, bacon, meat, 293, 16.6, 0.5, 25, 0,0, 100, g).	% 100g
+component(43, nata_liquida, lacteo, 81, 1, 2.5, 7.5, 0,0, 100, g).	% 100g
+component(44, queso_azul, lacteo, 340, 21, 1, 28, 0,0, 100, g).	% 100g
+component(45, champiñones, seta, 22, 3, 3.3, 0.1, 0,0, 100, g).	% 100g
+component(46, salsicha_cerdo_bon_area, meat, 228, 14.5, 1, 19, 0,0, 100, g).	% 100g
+component(47, alubias_blancas, legumbre, 284, 21.1, 34.7, 1.6, 0,0, 100, g).	% 100g
+component(48, bacalao, pescado, 78, 17.6, 0, 1, 0,0, 100, g).	% 100g
+component(49, anchoa, pescado, 7.6, 0.86, 0, 0.46, 0,0, 1, unidad).	% unidad
+component(50, pan_integral, harina, 68, 3, 12, 1, 0,0, 1, unidad).	% unidad
+component(51, loncha_pavo_bonarea, meat, 17.4, 3.4, 0.5, 0.2, 0,0, 1, unidad).	% unidad
+component(52, aguacate, fruta,396.1,3.2,0.7,40,0,0,1,unidad). %unidad
