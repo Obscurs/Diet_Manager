@@ -1,13 +1,13 @@
-numDays(7).
+_numDays(7).
 numProtesDay(155).
-numFatDay(85).
-numCarbDay(300).
-numKcalDay(2600).
-marginStats(10).
-numDayZones(6).
+_numFatDay(85).
+_numCarbDay(300).
+_numKcalDay(26).
+_marginStats(10).
+_numDayZones(6).
 numIngredients(60).
-numMeals(19).
-limitMealsZone(3).
+numMeals(7).
+_limitMealsZone(60).
 component(1, pollo, meat, 145, 22, 0, 6, 0, 0, 100, g).
 component(2, pavo, meat, 105, 24, 1, 1, 0, 0, 100, g).
 component(3, ala_pollo, meat, 217, 18, 0, 15, 0, 0, 100, g).
@@ -68,22 +68,10 @@ component(57, galletas_maria, fruta, 430, 6.7, 67.9, 15, 0, 0, 100, g).
 component(58, aceite_coco, fruta, 899, 0, 0, 99.8, 0, 0, 100, g).
 component(59, requeson, fruta, 72, 12.2, 5.2, 0.4, 0, 0, 100, g).
 component(60, miel, fruta, 302, 0.38, 75, 0, 0, 0, 100, g).
-meal(1, tortillaca_zumo, [34,33,32,5,36,4], [0.5,1,2,3,1,3.7], [1], [1, 14]).
-meal(2, tortillaca_light, [34,33,32,5,36,4,6], [0.5,1,1,1,1,3.7,2], [1], [1, 14]).
-meal(3, platano, [8], [1], [2,4], [1, 14]).
-meal(4, smothie_1, [35,7,8,30], [1.25,1.25,0.5,0.25], [2,4], [1, 14]).
-meal(5, protesuis, [37], [1], [4,6], [1, 14]).
-meal(6, leche_cereales, [7,38], [2.5,1], [6], [1, 2]).
-meal(7, bocata_jmon_ques, [50,51,32], [2,1,1], [2,4,6], [1, 14]).
-meal(8, bocata_atun, [50,13], [2,1], [2,4,6], [1, 2]).
-meal(9, protemufin, [30,8,35,54,55], [0.26,0.4,0.5,0.03,0.02], [2,4], [1, 2]).
-meal(10, cheescake, [57,58,59,35,6,30,60], [0.24,0.012,0.5,0.36,0.6,0.07,0.042], [2,4], [1, 2]).
-meal(11, merluza_papillote, [12,14,20,21,27,36], [2,1,0.5,0.5,3,1], [5], [1, 2]).
-meal(12, escalivada, [20,17,16,24,50], [0.5,0.25,1,1,2], [5], [1, 2]).
-meal(13, lentejas_con_gistantes, [53,18,14,23,24], [1.5,0.8,0.5,0.5,0.5], [5], [1, 2]).
-meal(14, empedrat_bacalao, [47,48,49,28,5,24,36], [1.5,1.5,4,0.5,0.5,0.5,1], [5], [1, 2]).
-meal(15, crema_calabaza, [25,26,16,23,14,32], [0.5,1.5,0.5,0.5,1,0.5], [5], [1, 2]).
-meal(16, fideua_verduras_pavo, [2,31,19,14,21,23,17,36], [2.2,1.6,0.5,0.3,0.5,0.5,0.25,1], [3], [1, 2]).
-meal(17, arroz_con_pollo, [29,1,19,24,36], [1.2,2,0.5,0.5,1], [3], [1, 2]).
-meal(18, espagetis_pavo, [31,2,23,45,7,32,36], [0.16,0.22,0.5,0.01,0.13,0.5,1], [3], [1, 2]).
-meal(19, quinoa_verduras, [56,24,5,23,14,25,21], [1.25,0.5,0.5,0.5,0.5,0.5,0.5], [3], [1, 2]).
+meal(1, tortillaca_zumo, [1,1,1,1,1,1,14,14,14,14,15,16], [0.01,0.01,0.01,0.01,0.01,9.99,1,19,1,1,1,1], [1,3,5,6], [1 14]).
+meal(2, tortillaca_light, [34,33,6], [1234,0.56,0.5], [1], [1 14]).
+meal(3, protemufin, [30,8,35,54,55], [0.26,0.4,0.5,0.03,0.02], [2,4], [1 2]).
+meal(4, merluza_papillote, [12,14,20,21,27,36], [2,1,0.5,0.5,3,1], [5], [1 2]).
+meal(5, escalivada, [20,17,16,24,50], [0.5,0.25,1,1,2], [5], [1 2]).
+meal(6, lentejas_con_gistantes, [53,18,14,23,24], [1.5,0.8,0.5,0.5,0.5], [5], [1 2]).
+meal(7, empedrat_bacalao, [47,48,49,28,5,24,36], [1.5,1.5,4,0.5,0.5,0.5,1], [5], [1 2]).

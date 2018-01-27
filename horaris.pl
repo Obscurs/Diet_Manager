@@ -163,14 +163,15 @@ createCombinationVariablesOptimized([(L,Rest)|LS],[comb-R-D|RS],D):-
 
 
 symbolicOutput(0). % set to 1 to see symbolic output only; 0 otherwise.
-
-
-
 day(D)					:- numDays(N), between(1,N,D).
 zone(Z)					:- numDayZones(N), between(1,N,Z).
 meal(M)					:- numMeals(N), between(1,N,M).
 ingredient(I)			:- numIngredients(N), between(1,N,I).
 mealOfZone(M,Z)			:- meal(M,_,_,_,LZ,_), member(Z,LZ).
+
+
+
+
 
 getStatsMealAux(0,0,0,0,[],[]).
 getStatsMealAux(Pres,Cres,Fres,Kres,[I|IS],[A|AS]):-
@@ -302,7 +303,13 @@ writeClauses:-
 
     true.
 
-
+mostMealPerZone:-
+	day(D),
+	zone(Z),
+	Z is 1,
+	findall(mdz-M-D-Z,mealOfZone(M,Z), Lits),
+	atMost(1,Lits),
+	fail.
 mostMealPerZone:-
 	day(D),
 	zone(Z),
@@ -429,12 +436,12 @@ expressOr( Var, Lits ):- negate(Var,NVar), writeClause([ NVar | Lits ]),!.
 
 exactly(K,Lits):- atLeast(K,Lits), atMost(K,Lits),!.
 
-atMost(K,Lits):-   % l1+...+ln <= k:  in all subsets of size k+1, at least one is false:
+atMost(K,Lits):-   % l1+...+ln <= k:  in all subsets of _size k+1, at least one is false:
     negateAll(Lits,NLits),
     K1 is K+1,    subsetOfSize(K1,NLits,Clause), writeClause(Clause),fail.
 atMost(_,_).
 
-atLeast(K,Lits):-  % l1+...+ln >= k: in all subsets of size n-k+1, at least one is true:
+atLeast(K,Lits):-  % l1+...+ln >= k: in all subsets of _size n-k+1, at least one is true:
     length(Lits,N),
     K1 is N-K+1,  subsetOfSize(K1, Lits,Clause), writeClause(Clause),fail.
 atLeast(_,_).
