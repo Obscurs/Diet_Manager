@@ -9,31 +9,11 @@
 #include "TextInput.h"
 #include "InterfaceSet.h"
 #include "CheckBox.h"
+#include "Settings.hpp"
+#include "Planer.hpp"
 
-struct Component {
-    int id;
-    std::string name;
-    std::string type;
-    float kcal;
-    float prot;
-    float carb;
-    float fat;
-    float amount;
-    float priority;
-    float stackAmount;
-    std::string unit;
-} ;
-
-struct Meal {
-    int id;
-    std::string name;
-    std::vector<float> ingredients;
-    std::vector<float> amounts;
-    std::vector<float> dayzones;
-    std::pair<int,int> uses;
-} ;
-enum States{MENU_MEALS, MENU_EDIT_MEAL};
-States _state = MENU_MEALS;
+enum States{MENU_MEALS, MENU_EDIT_MEAL, MAIN_MENU, MENU_RESULT, MENU_EDIT_COMPONENTS};
+States _state = MAIN_MENU;
 bool _exit = false;
 int _numDays = 7;
 int _numProtes = 155;
@@ -44,6 +24,8 @@ int _marginStats = 10;
 int _numDayZones = 6;
 int _limitMealsZone = 3;
 int _currentMealIndex = -1;
+bool _firstTimeResults = true;
+State* _simulatedMenu = nullptr;
 std::vector<Component*> _ingredients;
 std::vector<Meal*> _meals;
 
@@ -62,14 +44,19 @@ InterfaceList _menu_inteface_list_ingredients(_window, sf::Vector2f(300,850),
                                         1, "Add component");
 
 
+Button _main_menu_edit_meals(_window, sf::Vector2f(625,300),sf::Vector2f(500,50),"EDIT MEALS",0);
+Button _main_menu_edit_components(_window, sf::Vector2f(625,400),sf::Vector2f(500,50),"EDIT COMPONENTS",0);
+Button _main_menu_simulate(_window, sf::Vector2f(625,500),sf::Vector2f(500,50),"GET MENU",0);
+Button _save_changes(_window, sf::Vector2f(625,600),sf::Vector2f(500,50),"SAVE CHANGES",0);
+
 Button _add_meal_button(_window, sf::Vector2f(300,800),sf::Vector2f(500,50),"+",0);
 Button _show_kcal(_window, sf::Vector2f(900,550),sf::Vector2f(500,50),"EDIT",1);
 Button _show_dayzones(_window, sf::Vector2f(900,600),sf::Vector2f(500,50),"EDIT",1);
 Button _show_uses(_window, sf::Vector2f(900,650),sf::Vector2f(500,50),"EDIT",1);
 Button _edit_meal(_window, sf::Vector2f(900,750),sf::Vector2f(500,50),"EDIT",0);
 Button _delete_meal(_window, sf::Vector2f(900,800),sf::Vector2f(500,50),"DELETE",0);
-Button _save_changes(_window, sf::Vector2f(900,850),sf::Vector2f(500,50),"SAVE CHANGES",0);
-Button _back(_window, sf::Vector2f(900,800),sf::Vector2f(500,50),"BACK",0);
+
+Button _back(_window, sf::Vector2f(900,850),sf::Vector2f(500,50),"BACK",0);
 TextInput _minUses(_window, sf::Vector2f(1160,660),sf::Vector2f(20,30),0,"1","");
 TextInput _maxUses(_window, sf::Vector2f(1190,660),sf::Vector2f(20,30),0,"1","");
 
@@ -87,6 +74,11 @@ InterfaceList _meal_ingredients_list(_window, sf::Vector2f(300,200),
                                         sf::Vector2f(500,50),
                                         0,
                                         12, "Components");
+
+InterfaceList _components_ingredients_list(_window, sf::Vector2f(300,200),
+                                     sf::Vector2f(500,50),
+                                     0,
+                                     12, "Components");
 
 
 void savePlConfig(std::ofstream &myfile){
@@ -406,15 +398,35 @@ void setComponentsEditList(int compId){
         intList->addInterface(but4,sf::Vector2f(size.x*2+size2.x,0));
         _meal_ingredients_list.insertElement(intList);
     }
-
-
 }
-
+/** MAIN MENU **/
+void updateMainMenu(sf::RenderWindow &_window){
+    _main_menu_edit_components.update();
+    _main_menu_edit_meals.update();
+    _main_menu_simulate.update();
+    _save_changes.update();
+    if(_main_menu_edit_components.isClicked()) _state = MENU_EDIT_COMPONENTS;
+    else if(_main_menu_edit_meals.isClicked()) _state = MENU_MEALS;
+    else if(_main_menu_simulate.isClicked()) _state = MENU_RESULT;
+    else if(_save_changes.isClicked()){
+        saveToPl();
+        saveToText();
+        std::cout << "Saved changes" << std::endl;
+    }
+}
+void drawMainMenu(sf::RenderWindow &_window, sf::Font font){
+    _main_menu_edit_components.draw(font);
+    _main_menu_edit_meals.draw(font);
+    _main_menu_simulate.draw(font);
+    _save_changes.draw(font);
+}
+/** END MAIN MENU **/
+/** VIEW MEALS **/
 void updateMenuMeals(sf::RenderWindow &_window){
 
     _menu_inteface_list_meals.update();
-    _save_changes.update();
     _add_meal_button.update();
+    _back.update();
     int selected = _menu_inteface_list_meals.getIdSelected();
     if(selected>=0){
 
@@ -440,21 +452,17 @@ void updateMenuMeals(sf::RenderWindow &_window){
             _state = MENU_EDIT_MEAL;
         }
     }
-    if(_save_changes.isClicked()){
-        saveToPl();
-        saveToText();
-        std::cout << "Saved changes" << std::endl;
-    } else if(_delete_meal.isClicked()){
+    if(_delete_meal.isClicked()){
         deleteMeal(selected);
     } else if(_add_meal_button.isClicked()){
         newMeal();
-    }
+    } else if(_back.isClicked()) _state = MAIN_MENU;
 
 }
-
 void drawMenuMeals(sf::RenderWindow &_window, sf::Font font){
     _menu_inteface_list_meals.draw(font);
     _add_meal_button.draw(font);
+    _back.draw(font);
     int selected = _menu_inteface_list_meals.getIdSelected();
     if(selected>=0){
         _edit_meal.draw(font);
@@ -464,9 +472,10 @@ void drawMenuMeals(sf::RenderWindow &_window, sf::Font font){
         _show_uses.draw(font);
         _show_meal_chart.draw(font);
     }
-    _save_changes.draw(font);
-}
 
+}
+/** END VIEW MEALS **/
+/** EDIT MEALS **/
 void deleteIngredientMeal(int ingIndex, int mealIndex){
     Meal* m = _meals[mealIndex];
     m->ingredients.erase(m->ingredients.begin()+ingIndex);
@@ -529,6 +538,7 @@ void updateEditMeals(sf::RenderWindow &_window){
     _c5.update();
     _c6.update();
     int selected = _meal_ingredients_list.getIdSelected();
+    if(_back.isClicked())_state = MENU_MEALS;
     if(selected>=0){
 
         std::vector<Interface*> ingredients = _meal_ingredients_list.getElements();
@@ -582,13 +592,160 @@ void drawEditMeals(sf::RenderWindow &_window, sf::Font font){
     _c4.draw(font);
     _c5.draw(font);
     _c6.draw(font);
-    if(_back.isClicked())_state = MENU_MEALS;
+
     int selected = _meal_ingredients_list.getIdSelected();
     if(selected>=0){
 
     }
 }
+/** END EDIT MEALS **/
 
+/** EDIT COMPONENTS **/
+
+void updateEditComponents(sf::RenderWindow &_window){
+
+    _components_ingredients_list.update();
+
+    _back.update();
+
+    int selected = _components_ingredients_list.getIdSelected();
+    if(selected>=0){
+    /*
+        std::vector<Interface*> ingredients = _components_ingredients_list.getElements();
+        for(int i = 0; i<ingredients.size(); ++i){
+            InterfaceSet *is = static_cast<InterfaceSet*>(ingredients[i]);
+            std::vector<Interface*> interfaces = is->getElements();
+            if(interfaces[3]->isClicked()){
+                deleteIngredientMeal(i, _currentMealIndex);
+                break;
+            } else {
+                TextInput *textInt = static_cast<TextInput*>(interfaces[1]);
+                std::string amountxt = textInt->getText();
+                if(amountxt=="") amountxt = "0";
+                setIngredientMealAmount(i, _currentMealIndex,std::stof(amountxt));
+            }
+        }
+*/
+    }
+    if(_back.isClicked())_state = MAIN_MENU;
+
+
+}
+void drawEditComponents(sf::RenderWindow &_window, sf::Font font){
+    _components_ingredients_list.draw(font);
+
+    _back.draw(font);
+
+    int selected = _components_ingredients_list.getIdSelected();
+    if(selected>=0){
+
+    }
+}
+/** END EDIT COMPONENTS **/
+/** RESULTS **/
+void updateResultsMenu(sf::RenderWindow &_window){
+    _back.update();
+    if(_firstTimeResults){
+        _firstTimeResults = false;
+        for(int i=0; i< _meals.size(); ++i){
+            _meals[i]->carb = calcCarbMeal(_meals[i]);
+            _meals[i]->fat = calcFatMeal(_meals[i]);
+            _meals[i]->prot = calcProtMeal(_meals[i]);
+            _meals[i]->kcal = calcKcalMeal(_meals[i]);
+
+        }
+        Planer* p = new Planer(_meals);
+        p->generateMenu(_window);
+        _simulatedMenu = p->getMenu();
+    }
+    else {
+
+    }
+    if(_back.isClicked()){
+        _simulatedMenu = nullptr;
+        _firstTimeResults = true;
+        _state = MAIN_MENU;
+    }
+}
+void drawResultsMenu(sf::RenderWindow &_window, sf::Font font){
+    int offsetXgeneral = 200;
+    int offsetYgeneral = 50;
+    int offsetX = 200;
+    int offsetY = 100;
+    int offsetY2 = 25;
+    if(!_firstTimeResults){
+        for(int i=0; i < NUM_DAYS; ++i){
+            sf::Text sftextDay;
+            sftextDay.setCharacterSize(12);
+            sftextDay.setColor(sf::Color::Black);
+
+            sftextDay.setFont(font); // font is a sf::Font
+            sftextDay.setString("                 DAY " + std::to_string(i) );
+            sftextDay.setPosition(sf::Vector2f(offsetX*i+offsetXgeneral, offsetYgeneral-offsetY2));
+
+            sf::RectangleShape rectangleNday(sf::Vector2f(0,0));
+            rectangleNday.setPosition(sf::Vector2f(offsetX*i+offsetXgeneral-5, offsetYgeneral-5-offsetY2));
+            rectangleNday.setSize(sf::Vector2f(offsetX, offsetY2));
+            rectangleNday.setOutlineColor(sf::Color::Black);
+            rectangleNday.setOutlineThickness(4.0);
+            rectangleNday.setOutlineThickness(2);
+            rectangleNday.setOutlineColor(sf::Color(147, 91, 0));
+            rectangleNday.setFillColor(sf::Color(200, 191, 104));
+            _window.draw(rectangleNday);
+            _window.draw(sftextDay);
+            for(int j=0; j < NUM_DAYZONES; ++j){
+
+                sf::RectangleShape rectangle(sf::Vector2f(0,0));
+                rectangle.setPosition(sf::Vector2f(offsetX*i+offsetXgeneral-5, offsetY*j+offsetYgeneral-5));
+                rectangle.setSize(sf::Vector2f(offsetX, offsetY));
+                rectangle.setOutlineColor(sf::Color::Black);
+                rectangle.setOutlineThickness(4.0);
+                rectangle.setFillColor(sf::Color(200, 200, 200));
+                rectangle.setOutlineThickness(2);
+                rectangle.setOutlineColor(sf::Color(147, 91, 0));
+                rectangle.setFillColor(sf::Color(255, 211, 124));
+                _window.draw(rectangle);
+                for(int k=0; k < _simulatedMenu->getNumMealsZone(i,j); ++k){
+                    sf::Text sftext;
+                    sftext.setCharacterSize(12);
+                    sftext.setColor(sf::Color::Black);
+
+                    sftext.setFont(font); // font is a sf::Font
+                    sftext.setString(_meals[_simulatedMenu->getMeal(i,j,k)-1]->name);
+                    sftext.setPosition(sf::Vector2f(offsetX*i+offsetXgeneral, offsetY*j+offsetY2*k+offsetYgeneral));
+                    _window.draw(sftext);
+                }
+
+            }
+            float fat = 0;
+            float kcal = 0;
+            float carb = 0;
+            float prot = 0;
+            for(int j=0; j< NUM_DAYZONES; ++j){
+                for(int k = 0; k< _simulatedMenu->getNumMealsZone(i,j); ++ k){
+                    fat += _meals[_simulatedMenu->getMeal(i,j,k)-1]->fat;
+                    kcal += _meals[_simulatedMenu->getMeal(i,j,k)-1]->kcal;
+                    carb += _meals[_simulatedMenu->getMeal(i,j,k)-1]->carb;
+                    prot += _meals[_simulatedMenu->getMeal(i,j,k)-1]->prot;
+                }
+            }
+            float devKcal = kcal > GOAL_KCAL ? kcal - GOAL_KCAL : GOAL_KCAL - kcal;
+            float devFat = fat > GOAL_FAT ? fat - GOAL_FAT : GOAL_FAT - fat;
+            float devProt = prot > GOAL_PROT ? prot - GOAL_PROT : GOAL_PROT - prot;
+            float devCarb = carb > GOAL_CARB ? carb - GOAL_CARB : GOAL_CARB - carb;
+
+            sftextDay.setString(
+            "Kcal: " + std::to_string(kcal) + " (" + std::to_string(((GOAL_KCAL+devKcal)/GOAL_KCAL-1)*100) + "%) \n" +
+            "Fat: " + std::to_string(fat) + " (" + std::to_string(((GOAL_FAT+devFat)/GOAL_FAT-1)*100) + "%) \n" +
+            "Prot: " + std::to_string(prot) + " (" + std::to_string(((GOAL_PROT+devProt)/GOAL_PROT-1)*100) + "%) \n" +
+            "Carb: " + std::to_string(carb) + " (" + std::to_string(((GOAL_CARB+devCarb)/GOAL_CARB-1)*100) + "%) \n");
+            sftextDay.setPosition(sf::Vector2f(offsetX*i+offsetXgeneral, offsetYgeneral+offsetY*NUM_DAYZONES));
+            _window.draw(sftextDay);
+        }
+    }
+    _back.draw(font);
+}
+/** END RESULTS **/
 void Events(sf::RenderWindow &_window){
     sf::Event currentEvent;
     while(_window.pollEvent(currentEvent))
@@ -674,6 +831,7 @@ void Events(sf::RenderWindow &_window){
 
 
 int main() {
+    srand (time(NULL));
     loadText();
     refreashIntefaceLists();
     for(int i=0; i<_ingredients.size(); ++i){
@@ -702,6 +860,18 @@ int main() {
                 updateMenuMeals(_window);
 
                 drawMenuMeals(_window,_font);
+                break;
+            case MAIN_MENU:
+                updateMainMenu(_window);
+                drawMainMenu(_window,_font);
+                break;
+            case MENU_RESULT:
+                updateResultsMenu(_window);
+                drawResultsMenu(_window,_font);
+                break;
+            case MENU_EDIT_COMPONENTS:
+                updateEditComponents(_window);
+                drawEditComponents(_window,_font);
                 break;
             case MENU_EDIT_MEAL:
                 updateEditMeals(_window);
