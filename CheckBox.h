@@ -2,9 +2,7 @@
 // Created by arnito on 27/01/18.
 //
 
-#ifndef DIET_MANAGER_CHECKBOX_H
-#define DIET_MANAGER_CHECKBOX_H
-
+#pragma once
 
 #include "Interface.h"
 
@@ -24,6 +22,3 @@ private:
     bool _value;
     int _id;
 };
-
-
-#endif //DIET_MANAGER_CHECKBOX_H

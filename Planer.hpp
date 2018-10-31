@@ -2,13 +2,14 @@
 // Created by arnito on 1/02/18.
 //
 
-#ifndef DIET_MANAGER_PLANER_HPP
-#define DIET_MANAGER_PLANER_HPP
+#pragma once
 
-#include <vector>
-#include <SFML/Graphics/RenderWindow.hpp>
 #include "Settings.hpp"
 #include "State.hpp"
+
+#include <SFML/Graphics/RenderWindow.hpp>
+
+#include <vector>
 
 class Planer {
 public:
@@ -29,6 +30,3 @@ private:
     State *_minState;
     std::vector<State*> _neighbours;
 };
-
-
-#endif //DIET_MANAGER_PLANER_HPP

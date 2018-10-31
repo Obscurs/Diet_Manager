@@ -1,13 +1,11 @@
 //
 // Created by arnito on 1/02/18.
-//
 
-#ifndef DIET_MANAGER_STATE_HPP
-#define DIET_MANAGER_STATE_HPP
+#pragma once
 
+#include "Settings.hpp"
 
 #include <vector>
-#include "Settings.hpp"
 
 class State {
 public:
@@ -36,6 +34,3 @@ private:
 protected:
     std::vector<int> _meals[NUM_DAYS][NUM_DAYZONES];
 };
-
-
-#endif //DIET_MANAGER_STATE_HPP

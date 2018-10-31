@@ -8,9 +8,9 @@ numDayZones(6).
 numIngredients(60).
 numMeals(19).
 limitMealsZone(3).
-component(1, pollo, meat, 145, 22, 0, 6, 0, 0, 100, g).
+component(1, polla, meat, 145, 22, 0, 6, 0, 0, 100, g).
 component(2, pavo, meat, 105, 24, 1, 1, 0, 0, 100, g).
-component(3, ala_pollo, meat, 217, 18, 0, 15, 0, 0, 100, g).
+component(3, ala_polla, meat, 217, 18, 0, 15, 0, 0, 100, g).
 component(4, zumo_naranja, fruit, 43, 1, 9, 0, 0, 0, 100, g).
 component(5, huevo_entero, meat, 97, 8, 0, 7, 0, 0, 1, unidad).
 component(6, huevo_clara, meat, 19, 4, 0, 0, 0, 0, 1, unidad).
@@ -84,6 +84,6 @@ meal(13, lentejas_con_gistantes, [53,18,14,23,24], [1.5,0.8,0.5,0.5,0.5], [5], [
 meal(14, empedrat_bacalao, [47,48,49,28,5,24,36], [1.5,1.5,4,0.5,0.5,0.5,1], [5], [1, 2]).
 meal(15, crema_calabaza, [25,26,16,23,14,32], [0.5,1.5,0.5,0.5,1,0.5], [5], [1, 2]).
 meal(16, fideua_verduras_pavo, [2,31,19,14,21,23,17,36], [2.2,1.6,0.5,0.3,0.5,0.5,0.25,1], [3], [1, 2]).
-meal(17, arroz_con_pollo, [29,1,19,24,36], [1.2,2,0.5,0.5,1], [3], [1, 2]).
+meal(17, arroz_con_polla, [29,1,19,24,36], [1.2,2,0.5,0.5,1], [3], [1, 2]).
 meal(18, espagetis_pavo, [31,2,23,45,7,32,36], [0.16,0.22,0.5,0.01,0.13,0.5,1], [3], [1, 2]).
 meal(19, quinoa_verduras, [56,24,5,23,14,25,21], [1.25,0.5,0.5,0.5,0.5,0.5,0.5], [3], [1, 2]).

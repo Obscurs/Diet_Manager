@@ -2,11 +2,11 @@
 // Created by arnito on 1/02/18.
 //
 
-#ifndef DIET_MANAGER_SETTINGS_HPP
-#define DIET_MANAGER_SETTINGS_HPP
+#pragma once
 
 #include <vector>
 #include <iostream>
+
 const int MAX_NUM_MEALS_ZONE[6] = {1, 3, 1, 3, 2, 2};
 const int NUM_DAYS = 7;
 const int NUM_DAYZONES = 6;
@@ -40,5 +40,3 @@ struct Meal {
     float carb;
     float fat;
 } ;
-
-#endif //DIET_MANAGER_SETTINGS_HPP

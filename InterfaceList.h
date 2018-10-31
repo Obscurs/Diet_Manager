@@ -2,13 +2,14 @@
 // Created by arnito on 11/12/16.
 //
 
-#ifndef GENLAND_INTERFACELIST_H
-#define GENLAND_INTERFACELIST_H
+#pragma once
+
+#include "Interface.h"
+
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
-#include "Interface.h"
 
 class InterfaceList : public Interface{
 public:
@@ -33,6 +34,3 @@ private:
     std::string _header;
     std::vector<Interface*> _elements;
 };
-
-
-#endif //GENLAND_INTERFACELIST_H

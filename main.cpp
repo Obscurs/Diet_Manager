@@ -12,74 +12,75 @@
 #include "Settings.hpp"
 #include "Planer.hpp"
 
-enum States{MENU_MEALS, MENU_EDIT_MEAL, MAIN_MENU, MENU_RESULT, MENU_EDIT_COMPONENTS};
-States _state = MAIN_MENU;
-bool _exit = false;
-int _numDays = 7;
-int _numProtes = 155;
-int _numFatDay = 85;
-int _numCarbDay = 300;
-int _numKcalDay = 2600;
-int _marginStats = 10;
-int _numDayZones = 6;
-int _limitMealsZone = 3;
-int _currentMealIndex = -1;
-bool _firstTimeResults = true;
-State* _simulatedMenu = nullptr;
-std::vector<Component*> _ingredients;
-std::vector<Meal*> _meals;
+namespace {
+    enum States{MENU_MEALS, MENU_EDIT_MEAL, MAIN_MENU, MENU_RESULT, MENU_EDIT_COMPONENTS};
+    States _state = MAIN_MENU;
+    bool _exit = false;
+    int _numDays = 7;
+    int _numProtes = 155;
+    int _numFatDay = 85;
+    int _numCarbDay = 300;
+    int _numKcalDay = 2600;
+    int _marginStats = 10;
+    int _numDayZones = 6;
+    int _limitMealsZone = 3;
+    int _currentMealIndex = -1;
+    bool _firstTimeResults = true;
+    State* _simulatedMenu = nullptr;
+    std::vector<Component*> _ingredients;
+    std::vector<Meal*> _meals;
 
-sf::RenderWindow _window(sf::VideoMode(1800, 900), "SFML works!");
-sf::Font _font;
-
-
-InterfaceList _menu_inteface_list_meals(_window, sf::Vector2f(300,200),
-                                      sf::Vector2f(500,50),
-                                      0,
-                                      12, "Menus");
-
-InterfaceList _menu_inteface_list_ingredients(_window, sf::Vector2f(300,850),
-                                        sf::Vector2f(500,50),
-                                        0,
-                                        1, "Add component");
+    sf::RenderWindow _window(sf::VideoMode(1800, 900), "SFML works!");
+    sf::Font _font;
 
 
-Button _main_menu_edit_meals(_window, sf::Vector2f(625,300),sf::Vector2f(500,50),"EDIT MEALS",0);
-Button _main_menu_edit_components(_window, sf::Vector2f(625,400),sf::Vector2f(500,50),"EDIT COMPONENTS",0);
-Button _main_menu_simulate(_window, sf::Vector2f(625,500),sf::Vector2f(500,50),"GET MENU",0);
-Button _save_changes(_window, sf::Vector2f(625,600),sf::Vector2f(500,50),"SAVE CHANGES",0);
+    InterfaceList _menu_inteface_list_meals(_window, sf::Vector2f(300,200),
+                                          sf::Vector2f(500,50),
+                                          0,
+                                          12, "Menus");
 
-Button _add_meal_button(_window, sf::Vector2f(300,800),sf::Vector2f(500,50),"+",0);
-Button _show_kcal(_window, sf::Vector2f(900,550),sf::Vector2f(500,50),"EDIT",1);
-Button _show_dayzones(_window, sf::Vector2f(900,600),sf::Vector2f(500,50),"EDIT",1);
-Button _show_uses(_window, sf::Vector2f(900,650),sf::Vector2f(500,50),"EDIT",1);
-Button _edit_meal(_window, sf::Vector2f(900,750),sf::Vector2f(500,50),"EDIT",0);
-Button _delete_meal(_window, sf::Vector2f(900,800),sf::Vector2f(500,50),"DELETE",0);
-
-Button _back(_window, sf::Vector2f(900,850),sf::Vector2f(500,50),"BACK",0);
-TextInput _minUses(_window, sf::Vector2f(1160,660),sf::Vector2f(20,30),0,"1","");
-TextInput _maxUses(_window, sf::Vector2f(1190,660),sf::Vector2f(20,30),0,"1","");
-
-CheckBox _c1(_window, sf::Vector2f(1160,610),sf::Vector2f(30,30),1);
-CheckBox _c2(_window, sf::Vector2f(1200,610),sf::Vector2f(30,30),2);
-CheckBox _c3(_window, sf::Vector2f(1240,610),sf::Vector2f(30,30),3);
-CheckBox _c4(_window, sf::Vector2f(1280,610),sf::Vector2f(30,30),4);
-CheckBox _c5(_window, sf::Vector2f(1320,610),sf::Vector2f(30,30),5);
-CheckBox _c6(_window, sf::Vector2f(1360,610),sf::Vector2f(30,30),6);
-
-Chart _show_meal_chart(_window,sf::Vector2f(900,150),sf::Vector2f(350,350));
+    InterfaceList _menu_inteface_list_ingredients(_window, sf::Vector2f(300,850),
+                                            sf::Vector2f(500,50),
+                                            0,
+                                            1, "Add component");
 
 
-InterfaceList _meal_ingredients_list(_window, sf::Vector2f(300,200),
-                                        sf::Vector2f(500,50),
-                                        0,
-                                        12, "Components");
+    Button _main_menu_edit_meals(_window, sf::Vector2f(625,300),sf::Vector2f(500,50),"EDIT MEALS",0);
+    Button _main_menu_edit_components(_window, sf::Vector2f(625,400),sf::Vector2f(500,50),"EDIT COMPONENTS",0);
+    Button _main_menu_simulate(_window, sf::Vector2f(625,500),sf::Vector2f(500,50),"GET MENU",0);
+    Button _save_changes(_window, sf::Vector2f(625,600),sf::Vector2f(500,50),"SAVE CHANGES",0);
 
-InterfaceList _components_ingredients_list(_window, sf::Vector2f(300,200),
-                                     sf::Vector2f(500,50),
-                                     0,
-                                     12, "Components");
+    Button _add_meal_button(_window, sf::Vector2f(300,800),sf::Vector2f(500,50),"+",0);
+    Button _show_kcal(_window, sf::Vector2f(900,550),sf::Vector2f(500,50),"EDIT",1);
+    Button _show_dayzones(_window, sf::Vector2f(900,600),sf::Vector2f(500,50),"EDIT",1);
+    Button _show_uses(_window, sf::Vector2f(900,650),sf::Vector2f(500,50),"EDIT",1);
+    Button _edit_meal(_window, sf::Vector2f(900,750),sf::Vector2f(500,50),"EDIT",0);
+    Button _delete_meal(_window, sf::Vector2f(900,800),sf::Vector2f(500,50),"DELETE",0);
 
+    Button _back(_window, sf::Vector2f(900,850),sf::Vector2f(500,50),"BACK",0);
+    TextInput _minUses(_window, sf::Vector2f(1160,660),sf::Vector2f(20,30),0,"1","");
+    TextInput _maxUses(_window, sf::Vector2f(1190,660),sf::Vector2f(20,30),0,"1","");
+
+    CheckBox _c1(_window, sf::Vector2f(1160,610),sf::Vector2f(30,30),1);
+    CheckBox _c2(_window, sf::Vector2f(1200,610),sf::Vector2f(30,30),2);
+    CheckBox _c3(_window, sf::Vector2f(1240,610),sf::Vector2f(30,30),3);
+    CheckBox _c4(_window, sf::Vector2f(1280,610),sf::Vector2f(30,30),4);
+    CheckBox _c5(_window, sf::Vector2f(1320,610),sf::Vector2f(30,30),5);
+    CheckBox _c6(_window, sf::Vector2f(1360,610),sf::Vector2f(30,30),6);
+
+    Chart _show_meal_chart(_window,sf::Vector2f(900,150),sf::Vector2f(350,350));
+
+
+    InterfaceList _meal_ingredients_list(_window, sf::Vector2f(300,200),
+                                            sf::Vector2f(500,50),
+                                            0,
+                                            12, "Components");
+
+    InterfaceList _components_ingredients_list(_window, sf::Vector2f(300,200),
+                                         sf::Vector2f(500,50),
+                                         0,
+                                         12, "Components");
+}
 
 void savePlConfig(std::ofstream &myfile){
     myfile <<"numDays("+std::to_string(_numDays)+")." << "\n";
