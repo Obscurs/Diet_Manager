@@ -2,8 +2,8 @@
 // Created by ant on 03/11/16.
 //
 
-#ifndef GENLAND_BUTTON_H
-#define GENLAND_BUTTON_H
+#pragma once
+
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -22,6 +22,3 @@ private:
     std::string _text;
     int _type;
 };
-
-
-#endif //GENLAND_BUTTON_H

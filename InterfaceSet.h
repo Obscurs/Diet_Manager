@@ -2,8 +2,8 @@
 // Created by arnito on 26/01/18.
 //
 
-#ifndef DIET_MANAGER_INTERFACESET_H
-#define DIET_MANAGER_INTERFACESET_H
+#pragma once
+
 #include "Interface.h"
 
 class InterfaceSet: public Interface {
@@ -22,6 +22,3 @@ private:
     std::vector<Interface*> _interfaces;
     std::vector<sf::Vector2f> _offsets;
 };
-
-
-#endif //DIET_MANAGER_INTERFACESET_H

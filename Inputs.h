@@ -1,8 +1,9 @@
-#ifndef __INPUTS_H__
-#define __INPUTS_H__
+#pragma once
+
+#include <SFML/Window.hpp>
 
 #include <vector>
-#include <SFML/Window.hpp>
+
 class Inputs {
 public:
     static void Update();
@@ -127,5 +128,3 @@ private:
     static bool _lastButtonState[NUM_BUTTONS];
     static bool _currentButtonState[NUM_BUTTONS];
 };
-
-#endif

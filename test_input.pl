@@ -8,9 +8,9 @@ _numDayZones(6).
 numIngredients(60).
 numMeals(7).
 _limitMealsZone(60).
-component(1, pollo, meat, 145, 22, 0, 6, 0, 0, 100, g).
+component(1, polla, meat, 145, 22, 0, 6, 0, 0, 100, g).
 component(2, pavo, meat, 105, 24, 1, 1, 0, 0, 100, g).
-component(3, ala_pollo, meat, 217, 18, 0, 15, 0, 0, 100, g).
+component(3, ala_polla, meat, 217, 18, 0, 15, 0, 0, 100, g).
 component(4, zumo_naranja, fruit, 43, 1, 9, 0, 0, 0, 100, g).
 component(5, huevo_entero, meat, 97, 8, 0, 7, 0, 0, 1, unidad).
 component(6, huevo_clara, meat, 19, 4, 0, 0, 0, 0, 1, unidad).

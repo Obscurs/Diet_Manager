@@ -1,9 +1,8 @@
 //
 // Created by arnito on 26/01/18.
 //
+#pragma once
 
-#ifndef DIET_MANAGER_INTERFACE_H
-#define DIET_MANAGER_INTERFACE_H
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
@@ -30,6 +29,3 @@ protected:
     bool _clicked;
     bool _mouseOver;
 };
-
-
-#endif //DIET_MANAGER_INTERFACE_H
